@@ -139,83 +139,82 @@ class AdvancedSystemOptimizer {
     return { error: true, message: 'Resource limit exceeded' }; 
     } 
     const efficiency = ((baseTime - optimizedTime) / baseTime) * 100; 
-    // this.metrics.totalCalls++; 
-    // this.metrics.avgLatency = (this.metrics.avgLatency * (this.metrics.totalCalls - 1) + optimizedTime) / 
-    // this.metrics.totalCalls; 
-    // this.metrics.throughput = 1000 / this.metrics.avgLatency; 
-    // this.metrics.efficiency = (this.metrics.efficiency * (this.metrics.totalCalls - 1) + efficiency) / 
-    // this.metrics.totalCalls; 
-    // this.metrics.resourceUsage = (this.metrics.resourceUsage * (this.metrics.totalCalls - 1) + resource) / 
-    // this.metrics.totalCalls; 
-    // this.metrics.errorRate = (this.metrics.errorRate * (this.metrics.totalCalls - 1) + (error ? 100 : 0)) / 
-    // this.metrics.totalCalls; 
-    // this.history.push({ call: callType, baseTime, optimizedTime, resource, error }); 
-    // return { baseTime, optimizedTime, resource, efficiency, error }; 
-    // } 
-    // executeSingleCall(callType) { 
-    // const result = this.optimizeCall(callType); 
-    // if (result.error) { 
-    // this.log(`ERROR: ${callType} - ${result.message}`); 
-    // } else { 
-    // this.log(`${callType}: ${result.baseTime.toFixed(2)}ms → ${result.optimizedTime.toFixed(2)}ms`); 
-    // this.log(`- Efficiency: ${result.efficiency.toFixed(2)}%`); 
-    // this.log(`- Resources: ${result.resource.toFixed(2)}%`); 
-    // if (result.error) this.log('- Status: FAILED'); 
-    // } 
-    // this.updateMetrics(); 
-    // this.updateStats(); 
-    // } 
-    // autoOptimize() { 
-    // if (!this.running) return; 
-    // const callType = this.callTypes[Math.floor(Math.random() * this.callTypes.length)].name; 
-    // this.executeSingleCall(callType); 
-    // this.intervalId = setTimeout(() => this.autoOptimize(), this.config.interval); 
-    // } 
-    // start() { 
-    // if (!this.running) { 
-    // this.running = true; 
-    // this.log('System optimization started'); 
-    // this.autoOptimize(); 
-    // } 
-    // } 
-    // stop() { 
-    // if (this.running) { 
-    // clearTimeout(this.intervalId); 
-    // this.running = false; 
-    // this.log('System optimization stopped'); 
-    // this.analyzeSystem(); 
-    // } 
-    // } 
-    // analyzeSystem() { 
-    // if (!this.history.length) { 
-    // this.log('No optimization data available'); 
-    // return; 
-    // } 
-    // const totalTimeSaved = this.history.reduce((sum, h) => sum + (h.baseTime - h.optimizedTime), 0); 
-    // const avgResource = this.history.reduce((sum, h) => sum + h.resource, 0) / this.history.length; 
-    // const errorCount = this.history.filter(h => h.error).length; 
-    // this.log('--- System Analysis ---'); 
-    // this.log(`Total time saved: ${totalTimeSaved.toFixed(2)}ms`); 
-    // this.log(`Average resource usage: ${avgResource.toFixed(2)}%`); 
-    // this.log(`Error count: ${errorCount} (${(errorCount / this.history.length * 100).toFixed(2)}%)`); 
-    // this.log(`Call distribution: ${this.getCallDistribution()}`); 
-    // } 
-    // clear() { 
-    // document.getElementById('logPanel').innerHTML = ''; 
-    // this.history = []; 
-    // this.metrics = { 
-    // totalCalls: 0, 
-    // avgLatency: 0, 
-    // throughput: 0, 
-    // efficiency: 0, 
-    // resourceUsage: 0, 
-    // errorRate: 0 
-    // }; 
-    // this.updateMetrics(); 
-    // this.updateStats(); 
-    // this.log('Logs and history cleared'); 
-    // } 
-    // } 
+    this.metrics.totalCalls++; 
+    this.metrics.avgLatency = (this.metrics.avgLatency * (this.metrics.totalCalls - 1) + optimizedTime) / 
+    this.metrics.totalCalls; 
+    this.metrics.throughput = 1000 / this.metrics.avgLatency; 
+    this.metrics.efficiency = (this.metrics.efficiency * (this.metrics.totalCalls - 1) + efficiency) / 
+    this.metrics.totalCalls; 
+    this.metrics.resourceUsage = (this.metrics.resourceUsage * (this.metrics.totalCalls - 1) + resource) / 
+    this.metrics.totalCalls; 
+    this.metrics.errorRate = (this.metrics.errorRate * (this.metrics.totalCalls - 1) + (error ? 100 : 0)) / 
+    this.metrics.totalCalls; 
+    this.history.push({ call: callType, baseTime, optimizedTime, resource, error }); 
+    return { baseTime, optimizedTime, resource, efficiency, error }; 
+    } 
+    executeSingleCall(callType) { 
+    const result = this.optimizeCall(callType); 
+    if (result.error) { 
+    this.log(`ERROR: ${callType} - ${result.message}`); 
+    } else { 
+    this.log(`${callType}: ${result.baseTime.toFixed(2)}ms → ${result.optimizedTime.toFixed(2)}ms`); 
+    this.log(`- Efficiency: ${result.efficiency.toFixed(2)}%`); 
+    this.log(`- Resources: ${result.resource.toFixed(2)}%`); 
+    if (result.error) this.log('- Status: FAILED'); 
+    } 
+    this.updateMetrics(); 
+    this.updateStats(); 
+    } 
+    autoOptimize() { 
+    if (!this.running) return; 
+    const callType = this.callTypes[Math.floor(Math.random() * this.callTypes.length)].name; 
+    this.executeSingleCall(callType); 
+    this.intervalId = setTimeout(() => this.autoOptimize(), this.config.interval); 
+    } 
+    start() { 
+    if (!this.running) { 
+    this.running = true; 
+    this.log('System optimization started'); 
+    this.autoOptimize(); 
+    } 
+    } 
+    stop() { 
+    if (this.running) { 
+    clearTimeout(this.intervalId); 
+    this.running = false; 
+    this.analyzeSystem(); 
+    } 
+    } 
+    analyzeSystem() { 
+    if (!this.history.length) { 
+    this.log('No optimization data available'); 
+    return; 
+    } 
+    const totalTimeSaved = this.history.reduce((sum, h) => sum + (h.baseTime - h.optimizedTime), 0); 
+    const avgResource = this.history.reduce((sum, h) => sum + h.resource, 0) / this.history.length; 
+    const errorCount = this.history.filter(h => h.error).length; 
+    this.log('--- System Analysis ---'); 
+    this.log(`Total time saved: ${totalTimeSaved.toFixed(2)}ms`); 
+    this.log(`Average resource usage: ${avgResource.toFixed(2)}%`); 
+    this.log(`Error count: ${errorCount} (${(errorCount / this.history.length * 100).toFixed(2)}%)`); 
+    this.log(`Call distribution: ${this.getCallDistribution()}`); 
+    } 
+    clear() { 
+    document.getElementById('logPanel').innerHTML = ''; 
+    this.history = []; 
+    this.metrics = { 
+    totalCalls: 0, 
+    avgLatency: 0, 
+    throughput: 0, 
+    efficiency: 0, 
+    resourceUsage: 0, 
+    errorRate: 0 
+    }; 
+    this.updateMetrics(); 
+    this.updateStats(); 
+    this.log('Logs and history cleared'); 
+    } 
+    } 
     const optimizer = new AdvancedSystemOptimizer(); 
     function startOptimization() { optimizer.start(); } 
     function stopOptimization() { optimizer.stop(); } 
